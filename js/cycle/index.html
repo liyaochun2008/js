@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+ <html lang="en">
+ <head>
+  <meta charset="UTF-8">
+     <meta name="description" content="">
+   <meta name="author" content="熊仔其人">
+    <title>转盘抽奖效果</title>
+    <!-- 这里是css部分 -->
+    <style>
+       #bg {
+         width: 650px;
+           height: 600px;
+            margin: 0 auto;
+           background: url(img/bg.png) no-repeat;
+            position: relative;
+       }
+
+      img[src^="img/pointer"] {
+           position: absolute;
+           z-index: 10;
+          top: 155px;
+            left: 250px;
+       }
+
+      img[src^="img/circle"] {
+            position: absolute;
+            z-index: 5;
+            top: 60px;
+            left: 116px;
+            transition: all 6s;
+        }
+    </style>
+ </head>
+<body>
+     <!-- 这里是HTML结构部分 --> 
+    <div id="bg"><img src="img/pointer.png" alt="pointer" id="pointer"><img src="img/circle.png" alt="turntable" id="circle"></div>  
+    <!-- 这里是js部分 -->
+   
+</body>
+ <script>
+        var oPointer = document.getElementById("pointer");
+       var oTurntable = document.getElementById("circle");
+       var cat = 51.4; //总共7个扇形区域，每个区域约51.4度
+      var num = 0; //转圈结束后停留的度数
+     var offOn = true; //是否正在抽奖
+          var timer = null;
+            var rdm = 0; //随机度数
+
+       oPointer.onclick = function () {
+           if (offOn) {
+                oTurntable.style.transform = "rotate(0deg)";
+                rdm=0;
+                num=0;
+                offOn = !offOn;
+                ratating();
+            }
+         }
+         //旋转
+       function ratating() {
+         
+          timer = setTimeout(function () {
+                if (Math.floor(rdm / 360) < 3) { rdm = Math.floor(Math.random() * 3600);
+                setTimeout(ratating,30)
+                }
+                else {
+                	clearTimeout(timer)
+                    oTurntable.style.transform = "rotate(" + rdm + "deg)";
+                    setTimeout(function () {
+                       offOn = !offOn;
+                       num = rdm % 360;
+                        if (num <= cat * 1) { alert("4999元"); console.log("rdm=" + rdm + "，num=" + num + "，" + "4999元"); }
+                      else if (num <= cat * 2) { alert("50元"); console.log("rdm=" + rdm + "，num=" + num + "，" + "50元"); }
+                       else if (num <= cat * 3) { alert("10元"); console.log("rdm=" + rdm + "，num=" + num + "，" + "10元"); }
+                       else if (num <= cat * 4) { alert("5元"); console.log("rdm=" + rdm + "，num=" + num + "，" + "5元"); }
+                       else if (num <= cat * 5) { alert("免息服务"); console.log("rdm=" + rdm + "，num=" + num + "，" + "免息服务"); }
+                        else if (num <= cat * 6) { alert("提交白金"); console.log("rdm=" + rdm + "，num=" + num + "，" + "提交白金"); }
+                       else if (num <= cat * 7) { alert("未中奖"); console.log("rdm=" + rdm + "，num=" + num + "，" + "未中奖"); }
+                       
+                }, 6000);
+              }
+                
+                
+                
+            }, 1000/60);
+        }
+    </script>
+ </html>
